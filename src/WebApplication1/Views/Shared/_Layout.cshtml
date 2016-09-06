@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Asp.Net Core App - @ViewBag.Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css'>
+    <link rel="stylesheet" href="~/css/style.css">
+</head>
+<body>
+    <div id="sidebar">
+        <img src="http://loremflickr.com/320/240/person,photo,profile/all" alt="headshot" class="headshot" />
+        <span id="username">User Name</span>
+        <ul class="menu">
+            <li class="active"><a asp-controller="App" asp-action="Index">Home</a></li>
+            <li><a asp-controller="App" asp-action="About">About</a></li>
+            <li><a asp-controller="App" asp-action="Contact">Contact</a></li>
+        </ul>
+    </div>
+
+    <div id="wrapper">
+        <div id="main">
+            <div>
+                <button id="sidebarToggle">Toggle menu</button>
+            </div>
+            @RenderBody()
+        </div>
+        <div class="" id="footer">
+            &copy;2016 Contact Form AB
+        </div>
+    </div>
+
+    <!--<script src='https://code.jquery.com/jquery-2.2.4.min.js'></script>-->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/index.js"></script>
+    <script type="text/javascript" src="~/js/site.js"></script>
+
+</body>
+</html>
