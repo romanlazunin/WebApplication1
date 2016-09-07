@@ -29,9 +29,6 @@ namespace WebApplication1
                 app.UseDeveloperExceptionPage();
             }
 
-            //app.UseDefaultFiles();
-            app.UseStaticFiles();
-
             app.UseMvc(config =>
             {
                 config.MapRoute(
@@ -39,6 +36,9 @@ namespace WebApplication1
                     template: "{controller}/{action}/{id?}",
                     defaults: new { controller = "App", action = "Index" });
             });
+
+            //app.UseDefaultFiles();
+            app.UseStaticFiles();
         }
     }
 }
