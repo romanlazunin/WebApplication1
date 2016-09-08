@@ -4,14 +4,17 @@
     <meta charset="UTF-8">
     <title>Asp.Net Core App - @ViewBag.Title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css'>
+    @*<link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css'>*@
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="~/lib/bootswatch/yeti/bootstrap.min.css"/>
+    <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css"/>
     <link rel="stylesheet" href="~/css/style.css">
 </head>
 <body>
     <div id="sidebar">
         <img src="http://loremflickr.com/320/240/person,photo,profile/all" alt="headshot" class="headshot" />
         <span id="username">User Name</span>
-        <ul class="menu">
+        <ul class="nav">
             <li class="active"><a asp-controller="App" asp-action="Index">Home</a></li>
             <li><a asp-controller="App" asp-action="About">About</a></li>
             <li><a asp-controller="App" asp-action="Contact">Contact</a></li>
@@ -19,14 +22,38 @@
     </div>
 
     <div id="wrapper">
-        <div id="main">
-            <div>
-                <button id="sidebarToggle">Toggle menu</button>
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <ul class="nav navbar-nav navbar-left">
+                    <li>
+                        <button id="sidebarToggle" class="btn btn-primary">
+                            <i class="fa fa-angle-left"></i>
+                        </button>
+                    </li>
+                </ul>
+                <a asp-controller="App" asp-action="Index" class="navbar-brand">Web Application A</a>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="#" class="btn btn-sm btn-info">
+                            <i class="fa fa-save"></i> Save
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="btn btn-sm btn-info">
+                            <i class="fa fa-print"></i> Print
+                        </a>
+                    </li>
+
+                </ul>
             </div>
+        </nav>
+        <div id="main" class="container-fluid">
             @RenderBody()
         </div>
-        <div class="" id="footer">
-            &copy;2016 Contact Form AB
+        <div id="footer" class="container-fluid">
+            <div class="navbar navbar-inverse navbar-fixed-bottom">
+                <h4 class="text-center text-info">&copy;2016 Contact Form AB</h4>
+            </div>
         </div>
     </div>
 
@@ -35,9 +62,10 @@
     @RenderSection("scripts", false)
 
     <!--<script src='https://code.jquery.com/jquery-2.2.4.min.js'></script>-->
-    
+
     <script src="~/js/index.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="~/js/site.js"></script>
-    
+
 </body>
 </html>
