@@ -46,6 +46,8 @@ namespace WebApplication1
             services.AddScoped<IAppRepository, AppRepository>();
             services.AddTransient<AppDbContextSeedData>();
 
+            services.AddLogging();
+
             services.AddMvc();
         }
 
@@ -60,6 +62,11 @@ namespace WebApplication1
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                loggerFactory.AddDebug(LogLevel.Information);
+            }
+            else
+            {
+                loggerFactory.AddDebug(LogLevel.Error);
             }
 
             app.UseMvc(config =>

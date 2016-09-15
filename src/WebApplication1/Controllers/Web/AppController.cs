@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,18 +17,34 @@ namespace WebApplication1.Controllers.Web
     {
         private IMailService _mailService;
         private IAppRepository _repository;
+        private IConfigurationRoot _config;
+        private ILogger<AppController> _logger;
 
-        public AppController(IMailService mailService, IAppRepository repository)
+        public AppController(IMailService mailService, 
+            IConfigurationRoot config,
+            IAppRepository repository,
+            ILogger<AppController> logger)
         {
+            _config = config;
             _mailService = mailService;
             _repository = repository;
+            _logger = logger;
         }
 
         public IActionResult Index()
         {
-            var trips = _repository.GetAllTrips();
+            try
+            {
+                var trips = _repository.GetAllTrips();
 
-            return View(trips);
+                return View(trips);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Failed to get trips in Index page from db: {ex.Message}");
+                return Redirect("/error");
+
+            }
         }
 
         public IActionResult Contact()
