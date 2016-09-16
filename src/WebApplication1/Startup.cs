@@ -47,6 +47,7 @@ namespace WebApplication1
 
             services.AddDbContext<AppDbContext>();
             services.AddScoped<IAppRepository, AppRepository>();
+            services.AddTransient<GeoCoordServices>();
             services.AddTransient<AppDbContextSeedData>();
 
             services.AddLogging();

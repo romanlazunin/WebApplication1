@@ -4,5 +4,8 @@
   },
   "ConnectionStrings": {
     "AppContextConnection": "server=(localdb)\\mssqllocaldb;database=WebApplication1Db;Trusted_Connection=true;MultipleActiveResultSets=true;"
+  },
+  "Keys": {
+    "BingKey":  "DONTEVERPUTKEYSINSOURCECONTROL"
   }
 }

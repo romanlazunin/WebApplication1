@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebApplication1.Models;
+using WebApplication1.Services;
 using WebApplication1.ViewModels;
 
 namespace WebApplication1.Controllers.Api
@@ -17,7 +18,9 @@ namespace WebApplication1.Controllers.Api
         private ILogger<StopsController> _logger;
         private IAppRepository _repo;
 
-        public StopsController(IAppRepository repo, ILogger<StopsController> logger)
+        public StopsController(IAppRepository repo, 
+            ILogger<StopsController> logger,
+            GeoCoordServices coordsService)
         {
             _logger = logger;
             _repo = repo;
