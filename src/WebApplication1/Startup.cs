@@ -11,6 +11,8 @@ using WebApplication1.Services;
 using WebApplication1.Models;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Serialization;
+using AutoMapper;
+using WebApplication1.ViewModels;
 
 namespace WebApplication1
 {
@@ -58,6 +60,12 @@ namespace WebApplication1
             ILoggerFactory loggerFactory,
             AppDbContextSeedData seeder)
         {
+            Mapper.Initialize(config =>
+            {
+                config.CreateMap<TripViewModel, Trip>().ReverseMap();
+                config.CreateMap<StopViewModel, Stop>().ReverseMap();
+            });
+
             loggerFactory.AddConsole();
 
             if (env.IsDevelopment())
