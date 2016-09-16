@@ -11,9 +11,22 @@ namespace WebApplication1.Controllers.Api
     [Route("api/[controller]")]
     public class TripsController : Controller
     {
-        public JsonResult Get()
+        private IAppRepository _repo;
+
+        public TripsController(IAppRepository repo)
         {
-            return Json(new Trip() { Name = "My Trip" });
+            _repo = repo;
+        }
+
+        [HttpGet("")]
+        public IActionResult Get()
+        {
+            if (false)
+            {
+                return BadRequest("Bad things happened");
+            }
+
+            return Ok(_repo.GetAllTrips());
         }
 
         [HttpGet("{id}")]
@@ -25,5 +38,14 @@ namespace WebApplication1.Controllers.Api
             });
         }
 
+        [HttpPost("")]
+        public IActionResult Post([FromBody]Trip trip)
+        {
+            return Ok(new Trip{
+                Id = trip.Id,
+                Name = trip.Name,
+                DateCreated = DateTime.UtcNow
+            });
+        }
     }
 }
