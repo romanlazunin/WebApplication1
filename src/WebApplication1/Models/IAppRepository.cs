@@ -7,9 +7,9 @@ namespace WebApplication1.Models
     {
         IEnumerable<Trip> GetAllTrips();
         IEnumerable<Trip> GetUserTripsWithStops(string name);
-        Trip GetTripByName(string tripName);
+        Trip GetTripByName(string tripName, string userName);
         void AddTrip(Trip trip);
-        void AddStop(string tripName, Stop newStop);
+        void AddStop(string tripName, Stop newStop, string userName);
         Task<bool> SaveChangesAsync();
     }
 }

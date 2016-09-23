@@ -19,9 +19,9 @@ namespace WebApplication1.Models
             _context = context;
         }
 
-        public void AddStop(string tripName, Stop newStop)
+        public void AddStop(string tripName, Stop newStop, string userName)
         {
-            var trip = GetTripByName(tripName);
+            var trip = GetTripByName(tripName, userName);
 
             if (trip != null)
             {
@@ -57,11 +57,12 @@ namespace WebApplication1.Models
             }
         }
 
-        public Trip GetTripByName(string tripName)
+        public Trip GetTripByName(string tripName, string userName)
         {
             return _context.Trips
                 .Include(t => t.Stops)
                 .Where(t => t.Name == tripName)
+                .Where(t => t.UserName == userName)
                 .FirstOrDefault();
         }
 

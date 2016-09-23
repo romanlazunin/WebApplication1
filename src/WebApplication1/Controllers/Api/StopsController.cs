@@ -33,7 +33,7 @@ namespace WebApplication1.Controllers.Api
         {
             try
             {
-                var trip = _repo.GetTripByName(tripName);
+                var trip = _repo.GetTripByName(tripName, User.Identity.Name);
                 return Ok(Mapper.Map<IEnumerable<StopViewModel>>(trip.Stops.OrderBy(_ => _.Name)));
             }
             catch (Exception ex)
@@ -64,7 +64,7 @@ namespace WebApplication1.Controllers.Api
                         newStop.Longitude = result.Longitude;
                     }
 
-                    _repo.AddStop(tripName, newStop);
+                    _repo.AddStop(tripName, newStop, User.Identity.Name);
 
                     if (await _repo.SaveChangesAsync())
                     {
