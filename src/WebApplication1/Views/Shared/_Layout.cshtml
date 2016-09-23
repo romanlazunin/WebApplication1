@@ -5,19 +5,27 @@
     <title>Asp.Net Core App - @ViewBag.Title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     @*<link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css'>*@
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="~/lib/bootswatch/yeti/bootstrap.min.css"/>
-    <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/bootswatch/yeti/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css" />
     <link rel="stylesheet" href="~/css/style.css">
 </head>
 <body>
     <div id="sidebar">
-        <img src="http://loremflickr.com/320/240/person,photo,profile/all" alt="headshot" class="headshot" />
-        <span id="username">User Name</span>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <img src="http://loremflickr.com/320/240/person,photo,profile/all" alt="headshot" class="headshot" />
+            <span id="username">@User.Identity.Name</span>
+        }
         <ul class="nav">
             <li class="active"><a asp-controller="App" asp-action="Index">Home</a></li>
             <li><a asp-controller="App" asp-action="About">About</a></li>
             <li><a asp-controller="App" asp-action="Contact">Contact</a></li>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <li><a asp-controller="App" asp-action="Trips">Trips</a></li>
+                <li><a asp-controller="Auth" asp-action="Logout">Logout</a></li>
+            }
         </ul>
     </div>
 

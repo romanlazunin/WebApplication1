@@ -41,12 +41,45 @@ namespace WebApplication1.Models
             return _context.Trips.ToList();
         }
 
+        public IEnumerable<Trip> GetAllTripsWithStops()
+        {
+            try
+            {
+                return _context.Trips
+                    .Include(_ => _.Stops)
+                    .OrderBy(_ => _.Name)
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Could not get trips with stops from database", ex);
+                return null;
+            }
+        }
+
         public Trip GetTripByName(string tripName)
         {
             return _context.Trips
                 .Include(t => t.Stops)
                 .Where(t => t.Name == tripName)
                 .FirstOrDefault();
+        }
+
+        public IEnumerable<Trip> GetUserTripsWithStops(string name)
+        {
+            try
+            {
+                return _context.Trips
+                    .Include(_ => _.Stops)
+                    .OrderBy(_ => _.Name)
+                    .Where(_ => _.UserName == name)
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Could not get trips with stops from database", ex);
+                return null;
+            }
         }
 
         public async Task<bool> SaveChangesAsync()

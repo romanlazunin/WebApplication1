@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -11,6 +12,7 @@ using WebApplication1.ViewModels;
 
 namespace WebApplication1.Controllers.Api
 {
+    [Authorize]
     [Route("api/[controller]")]
     public class TripsController : Controller
     {
@@ -29,7 +31,7 @@ namespace WebApplication1.Controllers.Api
         {
             try
             {
-                var results = _repo.GetAllTrips();
+                var results = _repo.GetUserTripsWithStops(User.Identity.Name);
                 return Ok(Mapper.Map<IEnumerable<TripViewModel>>(results));
 
             }
@@ -55,6 +57,8 @@ namespace WebApplication1.Controllers.Api
             if (ModelState.IsValid)
             {
                 var newTrip = Mapper.Map<Trip>(trip);
+                newTrip.UserName = User.Identity.Name;
+
                 _repo.AddTrip(newTrip);
 
                 if (await _repo.SaveChangesAsync())

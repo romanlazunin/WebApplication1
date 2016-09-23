@@ -39,8 +39,8 @@ namespace WebApplication1.Services
             var json = await client.GetStringAsync(url);
 
             var results = JObject.Parse(json);
-            var resources = results["resourseSets"][0]["resources"];
-            if (!results["resourseSets"][0]["resources"].HasValues)
+            var resources = results["resourceSets"][0]["resources"];
+            if (!results["resourceSets"][0]["resources"].HasValues)
             {
                 result.Message = $"Could not find '{name}' as a location";
             }
@@ -53,7 +53,7 @@ namespace WebApplication1.Services
                 }
                 else
                 {
-                    var coords = resources[0]["geoPoints"][0]["coordinates"];
+                    var coords = resources[0]["geocodePoints"][0]["coordinates"];
                     result.Latitude = (double)coords[0];
                     result.Longitude = (double)coords[1];
                     result.Success = true;

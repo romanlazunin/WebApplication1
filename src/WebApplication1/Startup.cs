@@ -13,6 +13,9 @@ using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Serialization;
 using AutoMapper;
 using WebApplication1.ViewModels;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace WebApplication1
 {
@@ -52,15 +55,47 @@ namespace WebApplication1
 
             services.AddLogging();
 
-            services.AddMvc();
+            services.AddMvc(_ =>
+            {
+                if (_env.IsProduction())
+                {
+                    _.Filters.Add(new RequireHttpsAttribute());
+                }
+            });
+
+            services.AddIdentity<AppUser, IdentityRole>(_ =>
+            {
+                _.User.RequireUniqueEmail = true;
+                _.Password.RequiredLength = 8;
+                _.Cookies.ApplicationCookie.LoginPath = "/Auth/Login";
+                _.Cookies.ApplicationCookie.Events = new CookieAuthenticationEvents()
+                {
+                    OnRedirectToLogin = async ctx =>
+                    {
+                        if (ctx.Request.Path.StartsWithSegments("/api") && 
+                            ctx.Response.StatusCode == 200)
+                        {
+                            ctx.Response.StatusCode = 401;
+                        }
+                        else
+                        {
+                            ctx.Response.Redirect(ctx.RedirectUri);
+                        }
+                        await Task.Yield();
+                    }
+                };
+            })
+            .AddEntityFrameworkStores<AppDbContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, 
-            IHostingEnvironment env, 
+        public void Configure(IApplicationBuilder app,
+            IHostingEnvironment env,
             ILoggerFactory loggerFactory,
             AppDbContextSeedData seeder)
         {
+            app.UseIdentity();
+
             Mapper.Initialize(config =>
             {
                 config.CreateMap<TripViewModel, Trip>().ReverseMap();

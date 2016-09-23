@@ -15,6 +15,7 @@ namespace WebApplication1.Controllers.Api
     [Route("api/trips/{tripName}/stops")]
     public class StopsController : Controller
     {
+        private GeoCoordServices _coordsService;
         private ILogger<StopsController> _logger;
         private IAppRepository _repo;
 
@@ -24,6 +25,7 @@ namespace WebApplication1.Controllers.Api
         {
             _logger = logger;
             _repo = repo;
+            _coordsService = coordsService;
         }
 
         [HttpGet("")]
@@ -50,6 +52,17 @@ namespace WebApplication1.Controllers.Api
                 if (ModelState.IsValid)
                 {
                     var newStop = Mapper.Map<Stop>(vm);
+
+                    var result = await _coordsService.GetCoordsAsync(newStop.Name);
+                    if (!result.Success)
+                    {
+                        _logger.LogError(result.Message);
+                    }
+                    else
+                    {
+                        newStop.Latitude = result.Latitude;
+                        newStop.Longitude = result.Longitude;
+                    }
 
                     _repo.AddStop(tripName, newStop);
 

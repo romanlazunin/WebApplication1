@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,21 +10,35 @@ namespace WebApplication1.Models
     public class AppDbContextSeedData
     {
         private AppDbContext _context;
+        private UserManager<AppUser> _users;
 
-        public AppDbContextSeedData(AppDbContext context)
+        public AppDbContextSeedData(AppDbContext context,
+            UserManager<AppUser> users)
         {
             _context = context;
+            _users = users;
         }
 
         public async Task EnsureSeedDate()
         {
+            if (await _users.FindByEmailAsync("user1@example.com") == null)
+            {
+                var user = new AppUser()
+                {
+                    UserName = "user1",
+                    Email = "user1@example.com"
+                };
+
+                await _users.CreateAsync(user, "P@ssw0rd!");
+            }
+
             if (!_context.Trips.Any())
             {
                 var usTrip = new Trip()
                 {
                     DateCreated = DateTime.UtcNow,
                     Name = "US Trip",
-                    UserName = "",
+                    UserName = "user1",
                     Stops = new List<Stop>()
                     {
                         new Stop() {  Name = "Atlanta, GA", Arrival = new DateTime(2014, 6, 4), Latitude = 33.748995, Longitude = -84.387982, Order = 0 },
@@ -42,7 +57,7 @@ namespace WebApplication1.Models
                 {
                     DateCreated = DateTime.UtcNow,
                     Name = "WorldTrip",
-                    UserName = "",
+                    UserName = "user1",
                     Stops = new List<Stop>()
                     {
                         new Stop() { Order = 0, Latitude =  33.748995, Longitude =  -84.387982, Name = "Atlanta, Georgia", Arrival = DateTime.Parse("Jun 3, 2014") },
